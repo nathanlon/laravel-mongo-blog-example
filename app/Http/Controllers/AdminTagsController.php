@@ -6,12 +6,13 @@ namespace App\Http\Controllers;
 use App\Exceptions\TagServiceException;
 use App\Services\TagService;
 
-class AdminTagsController
+class AdminTagsController extends Controller
 {
     private $tagService;
 
     public function __construct(TagService $tagService)
     {
+        $this->middleware('auth');
         $this->tagService = $tagService;
     }
 

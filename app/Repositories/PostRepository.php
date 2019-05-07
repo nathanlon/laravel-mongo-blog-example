@@ -14,14 +14,14 @@ use Exception;
 
 class PostRepository implements PostRepositoryInterface
 {
-    private const PAGINATION_LIMIT = 100;
+    public const PAGINATION_LIMIT = 100; //@todo make this an env variable.
 
     public function getMostRecentPost(): ?Post
     {
         return Post::orderBy('created_at', 'desc')->take(1)->get()->first();
     }
 
-    public function getAllPosts($offset = 0, $limit = self::PAGINATION_LIMIT): iterable
+    public function getAllPosts(int $offset = 0, int $limit = self::PAGINATION_LIMIT): iterable
     {
         if ($limit > self::PAGINATION_LIMIT) {
             throw new RepositoryException('The limit for pagination cannot be exceeded.');
@@ -34,19 +34,9 @@ class PostRepository implements PostRepositoryInterface
         }
     }
 
-    public function getPostsInYear(string $year): iterable
-    {
-        /** @var Year $yearObject */
-        $yearObject = Year::where('name', '=', $year)->take(1)->get();
-
-        Post::where('year', '=', $yearObject->getId());
-    }
-
-    public function getPostsInMonth(Month $month, Year $year): iterable
-    {
-        return [];
-    }
-
+    /**
+     * @todo add pagination
+     */
     public function getPostsByTag(Tag $tag): iterable
     {
         return $tag->posts()->get();
@@ -143,4 +133,17 @@ class PostRepository implements PostRepositoryInterface
 
         return $post->tags()->get()->all();
     }
+
+    //public function getPostsInYear(string $year): iterable
+    //{
+    //    /** @var Year $yearObject */
+    //    $yearObject = Year::where('name', '=', $year)->take(1)->get();
+    //
+    //    Post::where('year', '=', $yearObject->getId());
+    //}
+    //
+    //public function getPostsInMonth(Month $month, Year $year): iterable
+    //{
+    //    return [];
+    //}
 }

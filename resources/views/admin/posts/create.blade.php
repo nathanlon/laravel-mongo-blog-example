@@ -12,7 +12,7 @@
             <input type="text" class="form-control" id="title" placeholder="Enter a title" name="title">
         </div>
         <div class="form-group">
-            <label for="body">Body</label>
+            <label for="body">Body (any HTML for now)</label>
             <textarea class="form-control" id="body" name="body"></textarea>
         </div>
         {{--<div class="form-group">--}}

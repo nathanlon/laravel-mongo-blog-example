@@ -26,7 +26,8 @@ Because this was a quick test project, there are many things left to be done. Th
    this code for a single blog only.
 - Would show who you are logged in as.
 - Would add validation on the models (to avoid javascript and form tampering - there is csrf there though.
--  Would make the gui for adding tags more like a pill type down, and prevent the same tag from being made twice.
+- Would make the gui for adding tags more like a pill type down, and prevent the same tag from being made twice.
+- Would remove tags that are no longer used by any posts when posts are deleted.
 - Would add a factory for creating the post from the model.
 - Would allow update of the date of the post when editing the post.
 - Would use a WYSIWUG editor for editing (currently raw HTML).

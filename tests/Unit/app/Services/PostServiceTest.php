@@ -40,6 +40,144 @@ class PostServiceTest extends TestCase
     /**
      * @test
      */
+    public function getMostRecentPost_returns_post(): void
+    {
+        $expectedPost = new Post();
+
+        $this->postRepositoryMock
+            ->shouldReceive('getMostRecentPost')
+            ->times(1)
+            ->andReturn($expectedPost);
+
+        $post = $this->postService->getMostRecentPost();
+
+        $this->assertEquals($expectedPost, $post);
+    }
+
+    /**
+     * @test
+     */
+    public function getMostRecentPost_returns_no_post_as_none_yet(): void
+    {
+        $this->postRepositoryMock
+            ->shouldReceive('getMostRecentPost')
+            ->times(1)
+            ->andReturn(null);
+
+        $post = $this->postService->getMostRecentPost();
+
+        $this->assertNull($post);
+    }
+
+    /**
+     * @test
+     */
+    public function getAllPosts_with_no_pagination_set_returns_posts()
+    {
+        $postsExpected = [
+            new Post(),
+            new Post(),
+        ];
+
+        $this->postRepositoryMock
+            ->shouldReceive('getAllPosts')
+            ->with(0, PostRepository::PAGINATION_LIMIT)
+            ->times(1)
+            ->andReturn($postsExpected);
+
+        $posts = $this->postService->getAllPosts();
+
+        $this->assertSame($postsExpected, $posts);
+    }
+
+    /**
+     * @test
+     */
+    public function getAllPosts_with_pagination_set_returns_posts()
+    {
+        $offset = 5;
+        $limit = 4;
+
+        $postsExpected = [
+            new Post(),
+            new Post(),
+        ];
+
+        $this->postRepositoryMock
+            ->shouldReceive('getAllPosts')
+            ->with($offset, $limit)
+            ->times(1)
+            ->andReturn($postsExpected);
+
+        $posts = $this->postService->getAllPosts($offset, $limit);
+
+        $this->assertSame($postsExpected, $posts);
+    }
+
+    /**
+     * @test
+     */
+    public function getAllPosts_with_exception_throws_clean_message_exception()
+    {
+        $offset = 0;
+        $limit = PostRepository::PAGINATION_LIMIT + 1;
+
+        $this->postRepositoryMock
+            ->shouldReceive('getAllPosts')
+            ->with($offset, $limit)
+            ->times(1)
+            ->andThrow(RepositoryException::class);
+
+        $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('There was an error getting all posts.');
+
+        $this->postService->getAllPosts($offset, $limit);
+    }
+
+    /**
+     * @test
+     */
+    public function getPostsByTag_returns_posts()
+    {
+        $tag = new Tag();
+        $expectedPosts = [
+            new Post(),
+            new Post(),
+        ];
+
+        $this->postRepositoryMock
+            ->shouldReceive('getPostsByTag')
+            ->with($tag)
+            ->times(1)
+            ->andReturn($expectedPosts);
+
+        $posts = $this->postService->getPostsByTag($tag);
+
+        $this->assertSame($expectedPosts, $posts);
+    }
+
+    /**
+     * @test
+     */
+    public function getPostsByTag_with_exception_throws_clean_message_exception()
+    {
+        $tag = new Tag();
+
+        $this->postRepositoryMock
+            ->shouldReceive('getPostsByTag')
+            ->with($tag)
+            ->times(1)
+            ->andThrow(Exception::class);
+
+        $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('An unknown error has occurred while finding posts for this tag.');
+
+        $this->postService->getPostsByTag($tag);
+    }
+
+    /**
+     * @test
+     */
     public function getPostById_returns_post(): void
     {
         $expectedPost = new Post();

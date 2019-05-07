@@ -7,12 +7,10 @@ use App\Exceptions\PostServiceException;
 use App\Exceptions\RepositoryException;
 use App\Model\Post\Create;
 use App\Model\Post\Update;
-//use App\Month;
 use App\Post;
+use App\Repositories\PostRepository;
 use App\Repositories\PostRepositoryInterface;
 use App\Repositories\TagRepositoryInterface;
-//use App\Tag;
-//use App\Year;
 use App\Tag;
 use Exception;
 
@@ -34,27 +32,17 @@ class PostService implements PostServiceInterface
         return $this->postRepository->getMostRecentPost();
     }
 
-    public function getAllPosts(): iterable
-    {
-        return $this->postRepository->getAllPosts();
+    public function getAllPosts(
+        int $offset = 0,
+        int $limit = PostRepository::PAGINATION_LIMIT //@todo make this an env variable.
+    ): iterable {
+        try {
+            return $this->postRepository->getAllPosts($offset, $limit);
+        } catch (RepositoryException $e) {
+            throw new PostServiceException('There was an error getting all posts.');
+        }
     }
 
-    //public function getPostsInYear(string $year): iterable
-    //{
-    //    return $this->postRepository->getPostsInYear($year);
-    //}
-    //
-    //public function getPostsInMonth(string $month, string $year): iterable
-    //{
-    //    //find a month and validate the month string.
-    //    $monthObject = new Month();
-    //
-    //    //find a year and validate the year string.
-    //    $yearObject = new Year();
-    //
-    //    return $this->postRepository->getPostsInMonth($monthObject, $yearObject);
-    //}
-    //
     public function getPostsByTag(Tag $tag): iterable
     {
         try {
@@ -153,4 +141,20 @@ class PostService implements PostServiceInterface
             throw new PostServiceException('Unable to delete this post.');
         }
     }
+
+    //public function getPostsInYear(string $year): iterable
+    //{
+    //    return $this->postRepository->getPostsInYear($year);
+    //}
+
+    //public function getPostsInMonth(string $month, string $year): iterable
+    //{
+    //    //find a month and validate the month string.
+    //    $monthObject = new Month();
+    //
+    //    //find a year and validate the year string.
+    //    $yearObject = new Year();
+    //
+    //    return $this->postRepository->getPostsInMonth($monthObject, $yearObject);
+    //}
 }

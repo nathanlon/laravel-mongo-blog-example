@@ -5,20 +5,14 @@ namespace App\Repositories;
 
 use App\Model\Post\Create;
 use App\Model\Post\Update;
-use App\Month;
 use App\Post;
 use App\Tag;
-use App\Year;
 
 interface PostRepositoryInterface
 {
     public function getMostRecentPost(): ?Post;
 
-    public function getAllPosts($offset, $limit): iterable;
-
-    public function getPostsInYear(string $year): iterable;
-
-    public function getPostsInMonth(Month $month, Year $year): iterable;
+    public function getAllPosts(int $offset, int $limit): iterable;
 
     public function getPostsByTag(Tag $tag): iterable;
 
@@ -37,4 +31,8 @@ interface PostRepositoryInterface
     public function clearTags(Post $post): void;
 
     public function savePost(Post $post): Post;
+
+    //public function getPostsInYear(string $year): iterable;
+    //
+    //public function getPostsInMonth(Month $month, Year $year): iterable;
 }
