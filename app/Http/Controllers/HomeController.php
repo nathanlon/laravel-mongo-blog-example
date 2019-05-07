@@ -15,8 +15,6 @@ class HomeController extends Controller
         PostServiceInterface $postService,
         TagServiceInterface $tagService
     ) {
-        $this->middleware('auth');
-
         $this->postService = $postService;
         $this->tagService = $tagService;
     }

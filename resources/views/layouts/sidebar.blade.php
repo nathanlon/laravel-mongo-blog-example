@@ -3,7 +3,7 @@
 <aside class="col-md-4 blog-sidebar">
     <div class="p-4 mb-3 bg-light rounded">
         <h4 class="font-italic">About</h4>
-        <p class="mb-0">Etiam porta <em>sem malesuada magna</em> mollis euismod. Cras mattis consectetur purus sit amet fermentum. Aenean lacinia bibendum nulla sed consectetur.</p>
+        <p class="mb-0">Welcome to my blog, set up to demonstrate the use of Laravel and MongoDB. Please read the readme file against the root for more information about this code.</p>
     </div>
 
     @include ('posts.includes.archives')

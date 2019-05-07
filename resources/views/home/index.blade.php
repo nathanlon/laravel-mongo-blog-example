@@ -19,10 +19,13 @@
             <h3 class="pb-4 mb-4 font-italic border-bottom">
                 From the Firehose
             </h3>
+            @if ($post)
+                @include ('posts.includes.post')
 
-            @include ('posts.includes.post')
-
-            @include ('posts.includes.pagination')
+                @include ('posts.includes.pagination')
+            @else
+                <div>There are no posts yet. Please login or register to make one.</div>
+            @endif
 
         </div><!-- /.blog-main -->
 
