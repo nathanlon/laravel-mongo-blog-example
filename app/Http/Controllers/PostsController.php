@@ -4,23 +4,21 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Services\PostServiceInterface;
+use App\Services\TagServiceInterface;
 
 class PostsController extends Controller
 {
     private $postService;
+    private $tagService;
 
-    public function __construct(PostServiceInterface $postService)
-    {
+    public function __construct(
+        PostServiceInterface $postService,
+        TagServiceInterface $tagService
+    ) {
         $this->postService = $postService;
+        $this->tagService = $tagService;
     }
 
-    //public function indexByTag(string $tag)
-    //{
-    //    return view('posts.index', [
-    //        'header' => sprintf('Posts tagged with %s', $tag),
-    //        'posts' => $this->postService->getPostsByTag($tag),
-    //    ]);
-    //}
     //
     //public function indexByYear(string $year)
     //{
@@ -44,6 +42,7 @@ class PostsController extends Controller
             'post' => $this->postService->getPostById($postId),
             'nextNumber' => null,
             'previousNumber' => null,
+            'tags' => $this->tagService->getAllTags(),
         ]);
     }
 
@@ -53,6 +52,7 @@ class PostsController extends Controller
             'post' => $this->postService->getPostBySequence($number),
             'nextNumber' => $number+1,
             'previousNumber' => (($number-1) > 0) ? $number-1 : null,
+            'tags' => $this->tagService->getAllTags(),
         ]);
     }
 }

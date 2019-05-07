@@ -26,7 +26,7 @@
                 <a href="#">Edit About</a>
             </h3>
             <h3 class="pb-4 mb-4 font-italic border-bottom">
-                <a href="#">Edit Tags</a>
+                <a href="{{ route('admin_tags_index') }}">Edit Tags</a>
             </h3>
             <h3 class="pb-4 mb-4 font-italic border-bottom">
                 <a href="#">Edit Categories</a>

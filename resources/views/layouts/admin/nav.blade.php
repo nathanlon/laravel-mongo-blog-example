@@ -37,7 +37,7 @@
         <nav class="nav d-flex justify-content-between">
             <a class="p-2 text-muted" href="{{ route('admin_posts_index') }}">Posts</a>
             <a class="p-2 text-muted" href="{{ route('admin_home') }}">Admin Home</a>
-            <a class="p-2 text-muted" href="#">Tags</a>
+            <a class="p-2 text-muted" href="{{ route('admin_tags_index') }}">Tags</a>
         </nav>
     </div>
 

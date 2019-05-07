@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Exceptions\RepositoryException;
 use App\Post;
 use App\Tag;
 
@@ -27,14 +28,25 @@ class TagRepository implements TagRepositoryInterface
         return $post;
     }
 
-    public function getTagById(string $id): ?Tag
+    public function getTagById(string $id): Tag
     {
-        return Tag::find($id);
+        $tag = Tag::find($id);
+
+        if (!$tag) {
+            throw new RepositoryException('A tag was not found with this id.');
+        }
+
+        return $tag;
     }
 
     public function getAllTags(): iterable
     {
         return Tag::all();
+    }
+
+    public function deleteTagById(string $id): void
+    {
+        Tag::destroy([$id]);
     }
 
     private function addTagToPostUsingTagId(Post $post, string $tagId): Post

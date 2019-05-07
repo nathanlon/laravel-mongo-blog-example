@@ -48,6 +48,7 @@ class AdminPostsController extends Controller
             'admin.posts.index',
             [
                 'posts' => $this->postService->getAllPosts(),
+                'tags' => $this->tagService->getAllTags(),
             ]
         );
     }

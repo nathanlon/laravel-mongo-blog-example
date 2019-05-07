@@ -49,7 +49,7 @@ class PostRepository implements PostRepositoryInterface
 
     public function getPostsByTag(Tag $tag): iterable
     {
-        return [];
+        return $tag->posts()->get();
     }
 
     public function createPost(Create $postCreateModel): Post

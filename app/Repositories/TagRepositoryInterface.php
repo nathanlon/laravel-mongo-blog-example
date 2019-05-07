@@ -13,7 +13,9 @@ interface TagRepositoryInterface
         iterable $newTags,
         iterable $existingTags): Post;
 
-    public function getTagById(string $id): ?Tag;
+    public function getTagById(string $id): Tag;
 
     public function getAllTags(): iterable;
+
+    public function deleteTagById(string $id): void;
 }

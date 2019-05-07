@@ -2,7 +2,7 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 
-//Route::get('/posts/tag/{tag}', 'PostsController@indexByTag');
+Route::get('/posts/tag/{id}', 'TagsController@indexByTag')->name('posts_index_tag');
 //
 //Route::get('/posts/year/{year}', 'PostsController@indexByYear');
 //
@@ -23,6 +23,10 @@ Route::post('/admin/posts/{id}/delete', 'AdminPostsController@delete')->name('ad
 Route::get('/admin/posts', 'AdminPostsController@index')->name('admin_posts_index');
 
 Route::post('/admin/posts', 'AdminPostsController@store')->name('admin_post_store');
+
+Route::get('/admin/tags', 'AdminTagsController@index')->name('admin_tags_index');
+
+Route::post('/admin/tag/{id}/delete', 'AdminTagsController@delete')->name('admin_tag_delete');
 
 Auth::routes();
 

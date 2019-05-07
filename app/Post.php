@@ -28,6 +28,15 @@ class Post extends Model
         return $this->getAttributeValue('body');
     }
 
+    public function getBodyTrimmed($trim = 150): ?string
+    {
+        $body = $this->getBody();
+
+        $bodyText = strip_tags($body);
+
+        return substr($bodyText, 0, $trim) . '...';
+    }
+
     public function setBody(string $body): self
     {
         $this->setAttribute('body', $body);

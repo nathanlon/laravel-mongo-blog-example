@@ -13,6 +13,7 @@ use App\Repositories\PostRepositoryInterface;
 use App\Repositories\TagRepositoryInterface;
 //use App\Tag;
 //use App\Year;
+use App\Tag;
 use Exception;
 
 class PostService implements PostServiceInterface
@@ -54,13 +55,14 @@ class PostService implements PostServiceInterface
     //    return $this->postRepository->getPostsInMonth($monthObject, $yearObject);
     //}
     //
-    //public function getPostsByTag(string $tag): iterable
-    //{
-    //    //find a tag from the string, or if none found, return empty array.
-    //    $tagObject = new Tag();
-    //
-    //    return $this->postRepository->getPostsByTag($tagObject);
-    //}
+    public function getPostsByTag(Tag $tag): iterable
+    {
+        try {
+            return $this->postRepository->getPostsByTag($tag);
+        } catch (Exception $e) {
+            throw new PostServiceException('An unknown error has occurred while finding posts for this tag.');
+        }
+    }
 
     public function getPostById(string $postId): Post
     {
@@ -70,10 +72,6 @@ class PostService implements PostServiceInterface
             throw new PostServiceException($e->getMessage());
         } catch (Exception $e) {
             throw new PostServiceException('An unknown error has occurred while finding this post.');
-        }
-
-        if (!$post) {
-            throw new PostServiceException('The post requested could not be found.');
         }
 
         return $post;
