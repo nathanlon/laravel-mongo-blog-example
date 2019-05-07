@@ -22,13 +22,16 @@
         {{--</div>--}}
 
         <div class="form-group">
+            <div>Existing Tags</div>
             @foreach ($tags as $tag)
-                <label for="tag_{{ $tag->getId() }}">
+                <label for="tag_{{ $tag->getId() }}" style="margin-right: 10px;">
                     <input type="checkbox" name="tag_{{ $tag->getId() }}">
                     {{ $tag->getName() }}
                 </label>
             @endforeach
+        </div>
 
+        <div class="form-group">
             <label for="newTag">New Tag</label>
             <input type="text" class="form-control" id="newTag" placeholder="Optional new tags (comma separated)" name="new_tags">
         </div>
