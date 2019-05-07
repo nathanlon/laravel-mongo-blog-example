@@ -15,11 +15,6 @@
             <label for="body">Body (any HTML for now)</label>
             <textarea class="form-control" id="body" name="body"></textarea>
         </div>
-        {{--<div class="form-group">--}}
-            {{--<label for="tags">Tags</label>--}}
-            {{--<input type="text" class="form-control" id="tags" placeholder="Tags may have multiple words - separate with a comma" name="tags">--}}
-            {{--<small id="emailHelp" class="form-text text-muted">Enter tags separated by a comma</small>--}}
-        {{--</div>--}}
 
         <div class="form-group">
             <div>Existing Tags</div>

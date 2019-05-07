@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Exceptions\PostServiceException;
 use App\Exceptions\RepositoryException;
 use App\Exceptions\TagServiceException;
 use App\Repositories\TagRepositoryInterface;

@@ -14,10 +14,6 @@ interface PostServiceInterface
 
     public function getAllPosts(): iterable;
 
-    //public function getPostsInYear(string $year): iterable;
-
-    //public function getPostsInMonth(string $month, string $year): iterable;
-
     public function getPostsByTag(Tag $tag): iterable;
 
     public function getPostById(string $postId): Post;
@@ -31,4 +27,8 @@ interface PostServiceInterface
     public function createPostWithTags(Create $postCreateModel): Post;
 
     public function deletePostById(string $id): void;
+
+    //public function getPostsInYear(string $year): iterable;
+
+    //public function getPostsInMonth(string $month, string $year): iterable;
 }

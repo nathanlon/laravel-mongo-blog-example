@@ -3,10 +3,6 @@
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('/posts/tag/{id}', 'TagsController@indexByTag')->name('posts_index_tag');
-//
-//Route::get('/posts/year/{year}', 'PostsController@indexByYear');
-//
-//Route::get('/posts/month/{month}', 'PostsController@indexByMonth');
 
 Route::get('/posts/page/{number}', 'PostsController@showPage')->name('post_show_page');
 
@@ -31,3 +27,7 @@ Route::post('/admin/tag/{id}/delete', 'AdminTagsController@delete')->name('admin
 Auth::routes();
 
 Route::get('/admin', 'AdminController@index')->name('admin_home');
+
+//Route::get('/posts/year/{year}', 'PostsController@indexByYear');
+
+//Route::get('/posts/month/{month}', 'PostsController@indexByMonth');

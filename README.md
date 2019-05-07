@@ -6,6 +6,17 @@ This blog is not complete, but a quick coding exercise to demonstrate the use of
 
 To install you will need MongoDB and PHP 7.2. Composer will also need to be installed and run to install dependencies.
 
+Add a .env file in the root, copying .env.example. Be sure to configure Mongo database credentials, eg:
+
+```
+DB_CONNECTION=mongodb
+DB_HOST=localhost
+DB_PORT=27017
+DB_DATABASE=blog
+DB_USERNAME=root
+DB_PASSWORD=password
+```
+
 ### First Visit
 
 When you view the homepage, it will be blank, you need to register as an admin in the top right under "Admin Area", then
@@ -38,7 +49,8 @@ Because this was a quick test project, there are many things left to be done. Th
 - Would log all exceptions.
 - Would put PAGINATION_LIMIT and some other things in an environment variable.
 - Would get previous and next post working when jumping directly to a post (only works when going from homepage (buttons below post).
-- Get next button to be disabled when no more pages. Currently fails with error.
+- Would get next button to be disabled when no more pages. Currently fails with error.
+- Would allow forgot password to work as email is not configured.
 - Would use SASS for making CSS.
 - Would add code standard tests that get run.
 - Everything like phpunit would be run through ant or similar so I can run code standard tests and linting as well.
@@ -80,6 +92,21 @@ but it was good to get a many to many relationship for the tagging, which was so
 
 I could have added Vue.js support as I have used this before, but I felt that learning 3 things at once in a limited
 time was a bit much.
+
+Method doc-blocks are mainly left out as the goal is to type hint as much as possible, and make method names explain
+themselves. My experience is that doc-blocks often become out of date and less helpful over time, but I understand when
+they should be used when auto-generating api documentation, or if in a coding standard.
+
+Exception classes have been added to allow throwing and catching of these in the controller with knowledge that the
+Service exception messages can be shown to the user as they are safe and often
+catching more generic exceptions like RepositoryException or \Exception.
+
+Interfaces are used for all services and repositories so the Dependency Injection can use this. I understand that this
+is a hotly contested difference of opinion for different developers as to how interfaces should be used, and so I'm open
+to adopting any coding standards here.
+
+Some methods and model classes (namely Year and Month) are unused and so commented at the bottom. This would
+usually be removed before commit but this is a work in progress.
 
 ## Authors
 

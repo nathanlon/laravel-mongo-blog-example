@@ -11,14 +11,7 @@
 
             <div class="col-4 d-flex justify-content-end align-items-center">
                 @guest
-                    {{--<li class="nav-item">--}}
-                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('register') }}">{{ __('Register') }}</a>
-                    {{--</li>--}}
-                    {{--@if (Route::has('register'))--}}
-                        {{--<li class="nav-item">--}}
-                            {{--<a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>--}}
-                        {{--</li>--}}
-                    {{--@endif--}}
+                    <a class="btn btn-sm btn-outline-secondary" href="{{ route('register') }}">{{ __('Register') }}</a>
                 @else
                     <a class="btn btn-sm btn-outline-secondary" href="{{ route('logout') }}"
                        onclick="event.preventDefault();

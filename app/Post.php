@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use DateTime;
 use Jenssegers\Mongodb\Relations\BelongsTo;
 
 class Post extends Model

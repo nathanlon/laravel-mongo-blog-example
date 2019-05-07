@@ -6,10 +6,8 @@ namespace App\Repositories;
 use App\Exceptions\RepositoryException;
 use App\Model\Post\Create;
 use App\Model\Post\Update;
-use App\Month;
 use App\Post;
 use App\Tag;
-use App\Year;
 use Exception;
 
 class PostRepository implements PostRepositoryInterface
@@ -118,11 +116,6 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
-    /**
-     * @param string $id of the post
-     * @return iterable with Tag objects.
-     * @throws \Exception
-     */
     private function getTagsForPostId(string $id): iterable
     {
         $post = $this->getPostById($id);
