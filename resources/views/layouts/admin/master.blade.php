@@ -36,6 +36,7 @@
     @include ('layouts.admin.nav')
 
     <main role="main" class="container">
+        @include('layouts.admin.flash-message')
 
         @yield ('content')
 

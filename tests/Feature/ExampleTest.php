@@ -14,8 +14,8 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
+        //$this->markTestSkipped("Functional testing would be next priority.");
         $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $response->assertStatus(302);
     }
 }

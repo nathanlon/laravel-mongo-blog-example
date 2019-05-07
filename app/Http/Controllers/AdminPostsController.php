@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\PostServiceException;
 use App\Model\Post\Create as PostCreateModel;
 use App\Model\Post\Update as PostUpdateModel;
 use App\Services\PostServiceInterface;
@@ -77,11 +78,13 @@ class AdminPostsController extends Controller
 
     public function delete(string $postId)
     {
-        $this->postService->deletePostById($postId);
+        try {
+            $this->postService->deletePostById($postId);
+        } catch (PostServiceException $e) {
+            return redirect('/admin/posts')->with('error', $e->getMessage());
+        }
 
-        //@todo insert flash to say deleted.
-
-        return redirect('/admin/posts');
+        return redirect('/admin/posts')->with('success', 'Post deleted successfully.');
     }
 
     public function store(Request $request)

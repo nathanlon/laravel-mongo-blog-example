@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-
 namespace App\Exceptions;
 
 use RuntimeException;
 
-class PostServiceException extends RuntimeException
+class RepositoryException extends RuntimeException
 {
 }

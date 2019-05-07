@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
+use App\Exceptions\RepositoryException;
 use App\Model\Post\Create;
 use App\Model\Post\Update;
 use App\Month;
 use App\Post;
 use App\Tag;
 use App\Year;
-use DateTime;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -45,14 +45,17 @@ class PostRepository implements PostRepositoryInterface
     {
         return Post::create([
             'title' => $postCreateModel->title,
-            'body' => $postCreateModel->body,
-            'createdAt' => new DateTime()
+            'body' => $postCreateModel->body
         ]);
     }
 
     public function updatePost(Update $postUpdateModel): Post
     {
         $post = $postUpdateModel->post;
+
+        if (!$post) {
+            throw new RepositoryException('A post was not found on the update model.');
+        }
 
         $post->setTitle($postUpdateModel->title);
         $post->setBody($postUpdateModel->body);
@@ -90,6 +93,13 @@ class PostRepository implements PostRepositoryInterface
         }
     }
 
+    public function savePost(Post $post): Post
+    {
+        $post->save();
+
+        return $post;
+    }
+
     /**
      * @param string $id of the post
      * @return iterable with Tag objects.
@@ -100,7 +110,7 @@ class PostRepository implements PostRepositoryInterface
         $post = $this->getPostById($id);
 
         if (!$post) {
-            throw new \Exception('Post id was not found when getting tags');
+            throw new RepositoryException('Post id was not found when getting tags');
         }
 
         return $post->tags()->get()->all();

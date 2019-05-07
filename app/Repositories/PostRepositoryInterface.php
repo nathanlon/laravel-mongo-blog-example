@@ -33,4 +33,6 @@ interface PostRepositoryInterface
     public function deletePostById(string $id): void;
 
     public function clearTags(Post $post): void;
+
+    public function savePost(Post $post): Post;
 }
