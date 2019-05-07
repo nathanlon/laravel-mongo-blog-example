@@ -5,13 +5,6 @@ namespace App;
 
 class Tag extends Model
 {
-    //id
-    //name
-    //user_id
-
-    public $id;
-    public $name;
-
     public function getName()
     {
         return $this->getAttribute('name');

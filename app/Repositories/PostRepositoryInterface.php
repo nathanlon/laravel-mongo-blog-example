@@ -28,8 +28,6 @@ interface PostRepositoryInterface
 
     public function getPostById(string $id): ?Post;
 
-    public function getTagsForPostId(string $id): iterable;
-
     public function getTagsForPostIdKeyedById(string $id): iterable;
 
     public function deletePostById(string $id): void;

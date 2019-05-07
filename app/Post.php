@@ -8,20 +8,6 @@ use Jenssegers\Mongodb\Relations\BelongsTo;
 
 class Post extends Model
 {
-    protected $dates = ['createdAt'];
-
-    /** @var string $title */
-    public $title;
-
-    /** @var DateTime $createdAt */
-    public $createdAt;
-
-    /** @var string $body */
-    public $body;
-
-    /** @var boolean $hasImage */
-    public $hasImage;
-
     /**
      * @return string
      */
@@ -64,13 +50,6 @@ class Post extends Model
     public function addNewTag($name): void
     {
         $this->tags()->create(compact('name'));
-    }
-
-    public function addNewTags(iterable $tags): void
-    {
-        foreach ($tags as $tag) {
-            $this->addNewTag($tag);
-        }
     }
 
     public function findExistingTag($tagId): ?Tag

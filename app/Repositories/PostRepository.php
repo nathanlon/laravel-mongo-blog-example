@@ -10,7 +10,6 @@ use App\Post;
 use App\Tag;
 use App\Year;
 use DateTime;
-use Illuminate\Database\Eloquent\Collection;
 
 class PostRepository implements PostRepositoryInterface
 {
@@ -66,24 +65,6 @@ class PostRepository implements PostRepositoryInterface
         return Post::find($id);
     }
 
-    /**
-     * @param string $id of the post
-     * @return iterable with Tag objects.
-     * @throws \Exception
-     */
-    public function getTagsForPostId(string $id): iterable
-    {
-        $post = $this->getPostById($id);
-
-        if (!$post) {
-            throw new \Exception('Post id was not found when getting tags');
-        }
-
-        $tags = $post->tags()->get()->all();
-
-        return $tags;
-    }
-
     public function getTagsForPostIdKeyedById(string $id): iterable
     {
         $tags = $this->getTagsForPostId($id);
@@ -103,10 +84,25 @@ class PostRepository implements PostRepositoryInterface
 
     public function clearTags(Post $post): void
     {
-        /** @var Tag $tag */
         foreach ($post->tags()->get() as $tag)
         {
             $post->tags()->detach($tag->getId());
         }
+    }
+
+    /**
+     * @param string $id of the post
+     * @return iterable with Tag objects.
+     * @throws \Exception
+     */
+    private function getTagsForPostId(string $id): iterable
+    {
+        $post = $this->getPostById($id);
+
+        if (!$post) {
+            throw new \Exception('Post id was not found when getting tags');
+        }
+
+        return $post->tags()->get()->all();
     }
 }

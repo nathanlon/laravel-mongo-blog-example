@@ -32,6 +32,11 @@ class TagRepository implements TagRepositoryInterface
         return Tag::find($id);
     }
 
+    public function getAllTags(): iterable
+    {
+        return Tag::all();
+    }
+
     private function addTagToPostUsingTagId(Post $post, string $tagId): Post
     {
         $post->tags()->attach($tagId);

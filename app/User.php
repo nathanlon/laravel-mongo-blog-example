@@ -15,10 +15,6 @@ class User extends Authenticatable
 
     protected $connection = 'mysql';
 
-    //blog_title
-    //email
-    //hash/password
-
     /**
      * The attributes that are mass assignable.
      *
@@ -45,8 +41,6 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    public $blogTitle;
 
     public function tags()
     {

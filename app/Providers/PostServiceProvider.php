@@ -21,7 +21,6 @@ class PostServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
     }
 
     /**
