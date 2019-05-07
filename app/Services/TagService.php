@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use TagServiceInterface;
+use App\Tag;
 
 class TagService implements TagServiceInterface
 {
     public function getAllTags(): iterable
     {
-        return [];
+        return Tag::all();
     }
 }

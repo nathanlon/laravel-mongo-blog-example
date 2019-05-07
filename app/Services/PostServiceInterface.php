@@ -4,10 +4,15 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Model\Post\Create;
+use App\Model\Post\Update;
 use App\Post;
 
 interface PostServiceInterface
 {
+    public function getMostRecentPost(): ?Post;
+
+    public function getAllPosts(): iterable;
+
     public function getPostsInYear(string $year): iterable;
 
     public function getPostsInMonth(string $month, string $year): iterable;
@@ -16,5 +21,11 @@ interface PostServiceInterface
 
     public function getPostById(string $postId): ?Post;
 
+    public function updatePostWithTags(Update $postUpdateModel): void;
+
+    public function getTagsForPostIdKeyedById(string $postId): iterable;
+
     public function createPostWithTags(Create $postCreateModel): void;
+
+    public function deletePostById(string $id): void;
 }

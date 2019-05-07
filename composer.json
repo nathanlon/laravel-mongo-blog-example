@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.2",
         "fideloper/proxy": "^4.0",
+        "jenssegers/mongodb": "3.4.6",
         "laravel/framework": "5.7.*",
         "laravel/tinker": "^1.0",
         "mongodb/mongodb": "^1.4"

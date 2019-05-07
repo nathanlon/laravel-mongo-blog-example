@@ -20,7 +20,7 @@
                 <a href="/admin/posts/create">Create a Post</a>
             </h3>
             <h3 class="pb-4 mb-4 font-italic border-bottom">
-                <a href="#">Edit a Post</a>
+                <a href="{{ route('admin_posts') }}">Edit a Post</a>
             </h3>
             <h3 class="pb-4 mb-4 font-italic border-bottom">
                 <a href="#">Edit About</a>

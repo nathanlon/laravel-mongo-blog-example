@@ -1,14 +1,19 @@
 <?php
+declare(strict_types=1);
 
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Jenssegers\Mongodb\Eloquent\HybridRelations;
 
 class User extends Authenticatable
 {
     use Notifiable;
+
+    use HybridRelations;
+
+    protected $connection = 'mysql';
 
     //blog_title
     //email
@@ -40,4 +45,16 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public $blogTitle;
+
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
 }

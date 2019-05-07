@@ -1,10 +1,12 @@
 <?php
+declare(strict_types=1);
 
 namespace App;
 
-class Month extends Model
+class Month extends Year
 {
-    //id
-    //name (eg December)
-    //year_id
+    public function year()
+    {
+        return $this->belongsTo(Year::class);
+    }
 }
