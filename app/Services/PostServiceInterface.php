@@ -19,7 +19,7 @@ interface PostServiceInterface
     //
     //public function getPostsByTag(string $tag): iterable;
 
-    public function getPostById(string $postId): ?Post;
+    public function getPostById(string $postId): Post;
 
     public function updatePostWithTags(Update $postUpdateModel): Post;
 

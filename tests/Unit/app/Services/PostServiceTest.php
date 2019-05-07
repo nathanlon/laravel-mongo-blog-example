@@ -57,16 +57,33 @@ class PostServiceTest extends TestCase
     /**
      * @test
      */
-    public function getPostById_returns_no_post(): void
+    public function getPostById_throws_exception_post_not_found(): void
     {
         $this->postRepositoryMock
             ->shouldReceive('getPostById')
             ->times(1)
             ->andReturn(null);
 
-        $post = $this->postService->getPostById('id-to-test');
+        $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('The post requested could not be found.');
 
-        $this->assertNull($post);
+        $this->postService->getPostById('invalid-post-id');
+    }
+
+    /**
+     * @test
+     */
+    public function getPostById_throws_exception_unkown_db_error(): void
+    {
+        $this->postRepositoryMock
+            ->shouldReceive('getPostById')
+            ->times(1)
+            ->andThrow(Exception::class);
+
+        $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('An unknown error has occurred while finding this post.');
+
+        $this->postService->getPostById('possibly-valid-post-id');
     }
 
     /**
@@ -130,7 +147,7 @@ class PostServiceTest extends TestCase
     /**
      * @test
      */
-    public function getTagsForPostIdKeyedById_throws_exception()
+    public function getTagsForPostIdKeyedById_throws_known_exception()
     {
         $postId = 'invalid-post-id';
 
@@ -141,6 +158,27 @@ class PostServiceTest extends TestCase
             ->andThrow(RepositoryException::class, 'Post id was not found when getting tags');
 
         $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('Post id was not found when getting tags');
+
+        $this->postService->getTagsForPostIdKeyedById($postId);
+    }
+
+    /**
+     * Ensure any errors from the database are trapped and a nice error is shown to the user.
+     * @test
+     */
+    public function getTagsForPostIdKeyedById_throws_unknown_exception()
+    {
+        $postId = 'invalid-post-id';
+
+        $this->postRepositoryMock
+            ->shouldReceive('getTagsForPostIdKeyedById')
+            ->times(1)
+            ->with($postId)
+            ->andThrow(Exception::class, 'Technical db error not to be shown.');
+
+        $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('An unknown error occurred while getting tags for this post.');
 
         $this->postService->getTagsForPostIdKeyedById($postId);
     }
@@ -214,7 +252,6 @@ class PostServiceTest extends TestCase
         $this->expectExceptionMessage('Unable to delete this post.');
 
         $this->postService->deletePostById($postId);
-
     }
 
     public function tearDown() :void

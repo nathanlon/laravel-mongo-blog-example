@@ -8,7 +8,7 @@ use App\Model\Post\Create as PostCreateModel;
 use App\Model\Post\Update as PostUpdateModel;
 use App\Services\PostServiceInterface;
 use App\Services\TagServiceInterface;
-use Http\Client\Exception\RequestException;
+use Exception;
 use Illuminate\Http\Request;
 
 class AdminPostsController extends Controller
@@ -26,6 +26,9 @@ class AdminPostsController extends Controller
         $this->tagService = $tagService;
     }
 
+    /**
+     * admin_post_create
+     */
     public function create()
     {
         return view(
@@ -36,6 +39,9 @@ class AdminPostsController extends Controller
         );
     }
 
+    /**
+     * admin_posts_index
+     */
     public function index()
     {
         return view(
@@ -46,47 +52,64 @@ class AdminPostsController extends Controller
         );
     }
 
+    /**
+     * admin_post_edit
+     */
     public function edit(string $id)
     {
-        return view(
-            'admin.posts.edit',
-            [
-                'post' => $this->postService->getPostById($id),
-                'tags' => $this->tagService->getAllTags(),
-                'checkedTags' => $this->postService->getTagsForPostIdKeyedById($id),
-            ]
-        );
+        try {
+            return view(
+                'admin.posts.edit',
+                [
+                    'post' => $this->postService->getPostById($id),
+                    'tags' => $this->tagService->getAllTags(),
+                    'checkedTags' => $this->postService->getTagsForPostIdKeyedById($id),
+                ]
+            );
+        } catch (PostServiceException $e) {
+            return redirect(route('admin_posts_index'))->with('error', $e->getMessage());
+        }
+
     }
 
+    /**
+     * admin_post_update
+     */
     public function update(string $postId, Request $request)
     {
         $postUpdateModel = new PostUpdateModel();
-        $postUpdateModel->post = $this->postService->getPostById($postId);
+        $redirectUrl = route('admin_post_edit', ['id' => $postId]);
 
-        if (null == $postUpdateModel->post) {
-            throw new RequestException('No post with the given id was found.');
+        try {
+            $postUpdateModel->post = $this->postService->getPostById($postId);
+            $postUpdateModel = $this->createPostModel($request, $postUpdateModel);
+            $this->postService->updatePostWithTags($postUpdateModel);
+        } catch (PostServiceException $e) {
+            return redirect($redirectUrl)->with($e->getMessage());
+        } catch (Exception $e) {
+            return redirect($redirectUrl)->with('An unknown error occurred while updating.');
         }
 
-        $postUpdateModel = $this->createPostModel($request, $postUpdateModel);
-
-        $this->postService->updatePostWithTags($postUpdateModel);
-
-        //@todo set flash that we have updated.
-
-        return redirect('/admin/posts/'.$postId.'/edit');
+        return redirect($redirectUrl)->with('success', 'Post saved successfully.');
     }
 
+    /**
+     * admin_post_delete
+     */
     public function delete(string $postId)
     {
         try {
             $this->postService->deletePostById($postId);
         } catch (PostServiceException $e) {
-            return redirect('/admin/posts')->with('error', $e->getMessage());
+            return redirect(route('admin_posts_index'))->with('error', $e->getMessage());
         }
 
-        return redirect('/admin/posts')->with('success', 'Post deleted successfully.');
+        return redirect(route('admin_posts_index'))->with('success', 'Post deleted successfully.');
     }
 
+    /**
+     * admin_post_store
+     */
     public function store(Request $request)
     {
         $postCreateModel = new PostCreateModel();
@@ -94,7 +117,7 @@ class AdminPostsController extends Controller
 
         $this->postService->createPostWithTags($postCreateModel);
 
-        return redirect('/admin');
+        return redirect(route('admin_posts_index'))->with('success', 'Post created successfully.');
     }
 
     private function getExistingTags(Request $request): iterable

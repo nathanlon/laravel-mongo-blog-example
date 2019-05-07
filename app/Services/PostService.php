@@ -62,22 +62,44 @@ class PostService implements PostServiceInterface
     //    return $this->postRepository->getPostsByTag($tagObject);
     //}
 
-    public function getPostById(string $postId): ?Post
+    public function getPostById(string $postId): Post
     {
-        return $this->postRepository->getPostById($postId);
+        try {
+            $post = $this->postRepository->getPostById($postId);
+        } catch (Exception $e) {
+            throw new PostServiceException('An unknown error has occurred while finding this post.');
+        }
+
+        if (!$post) {
+            throw new PostServiceException('The post requested could not be found.');
+        }
+
+        return $post;
     }
 
     public function updatePostWithTags(Update $postUpdateModel): Post
     {
-        $post = $this->postRepository->updatePost($postUpdateModel);
+        try {
+            $post = $this->postRepository->updatePost($postUpdateModel);
+        } catch (RepositoryException $e) {
+            throw new PostServiceException('An error occurred while updating the post content.');
+        }
 
-        $this->postRepository->clearTags($post);
+        try {
+            $this->postRepository->clearTags($post);
+        } catch (Exception $e) {
+            throw new PostServiceException('An error occurred when clearing tags in preparation for new ones.');
+        }
 
-        $post = $this->tagRepository->updateTagsForPost(
-            $post,
-            $postUpdateModel->newTags,
-            $postUpdateModel->existingTags
-        );
+        try {
+            $post = $this->tagRepository->updateTagsForPost(
+                $post,
+                $postUpdateModel->newTags,
+                $postUpdateModel->existingTags
+            );
+        } catch (Exception $e) {
+            throw new PostServiceException('An error occurred when updating tags for this post.');
+        }
 
         return $this->postRepository->savePost($post);
     }
@@ -88,6 +110,8 @@ class PostService implements PostServiceInterface
             return $this->postRepository->getTagsForPostIdKeyedById($postId);
         } catch (RepositoryException $e) {
             throw new PostServiceException($e->getMessage());
+        } catch (Exception $e) {
+            throw new PostServiceException('An unknown error occurred while getting tags for this post.');
         }
     }
 
