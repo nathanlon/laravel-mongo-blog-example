@@ -42,6 +42,17 @@ class PostsController extends Controller
     {
         return view('posts.show', [
             'post' => $this->postService->getPostById($postId),
+            'nextNumber' => null,
+            'previousNumber' => null,
+        ]);
+    }
+
+    public function showPage(string $number)
+    {
+        return view('posts.show', [
+            'post' => $this->postService->getPostBySequence($number),
+            'nextNumber' => $number+1,
+            'previousNumber' => (($number-1) > 0) ? $number-1 : null,
         ]);
     }
 }

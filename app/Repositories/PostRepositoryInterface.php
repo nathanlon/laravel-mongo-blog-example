@@ -14,7 +14,7 @@ interface PostRepositoryInterface
 {
     public function getMostRecentPost(): ?Post;
 
-    public function getAllPosts(): iterable;
+    public function getAllPosts($offset, $limit): iterable;
 
     public function getPostsInYear(string $year): iterable;
 
@@ -26,7 +26,9 @@ interface PostRepositoryInterface
 
     public function updatePost(Update $postUpdateModel): Post;
 
-    public function getPostById(string $id): ?Post;
+    public function getPostById(string $id): Post;
+
+    public function getPostBySequence(int $number): Post;
 
     public function getTagsForPostIdKeyedById(string $id): iterable;
 

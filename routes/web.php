@@ -8,6 +8,8 @@ Route::get('/', 'HomeController@index')->name('home');
 //
 //Route::get('/posts/month/{month}', 'PostsController@indexByMonth');
 
+Route::get('/posts/page/{number}', 'PostsController@showPage')->name('post_show_page');
+
 Route::get('/posts/{id}', 'PostsController@show')->name('post_show');
 
 Route::get('/admin/posts/create', 'AdminPostsController@create')->name('admin_post_create');

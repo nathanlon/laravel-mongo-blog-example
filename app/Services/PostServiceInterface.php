@@ -21,6 +21,8 @@ interface PostServiceInterface
 
     public function getPostById(string $postId): Post;
 
+    public function getPostBySequence(string $number): Post;
+
     public function updatePostWithTags(Update $postUpdateModel): Post;
 
     public function getTagsForPostIdKeyedById(string $postId): iterable;

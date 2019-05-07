@@ -14,7 +14,7 @@
 
                 @foreach($posts as $post)
                     <tr>
-                        <td>{{ $post->getTitle() }}</td>
+                        <td><a href="{{ route('post_show', ['id' => $post->getId()]) }}">{{ $post->getTitle() }}</a></td>
                         <td>{{ $post->getDateString() }}</td>
                         <td>
                             <a class="btn btn-primary" href="{{ route('admin_post_edit', ['id' => $post->getId()]) }}">Edit</a>

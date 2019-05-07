@@ -66,6 +66,8 @@ class PostService implements PostServiceInterface
     {
         try {
             $post = $this->postRepository->getPostById($postId);
+        } catch (RepositoryException $e) {
+            throw new PostServiceException($e->getMessage());
         } catch (Exception $e) {
             throw new PostServiceException('An unknown error has occurred while finding this post.');
         }
@@ -75,6 +77,21 @@ class PostService implements PostServiceInterface
         }
 
         return $post;
+    }
+
+    public function getPostBySequence(string $number): Post
+    {
+        if ((int) $number < 1) {
+            throw new PostServiceException('The page number requested is invalid.');
+        }
+
+        try {
+            return $this->postRepository->getPostBySequence((int)$number);
+        } catch (RepositoryException $e) {
+            throw new PostServiceException('The page number does not exist.');
+        } catch (Exception $e) {
+            throw new PostServiceException('An unknown error occurred while getting this post.');
+        }
     }
 
     public function updatePostWithTags(Update $postUpdateModel): Post

@@ -10,17 +10,28 @@ use App\Month;
 use App\Post;
 use App\Tag;
 use App\Year;
+use Exception;
 
 class PostRepository implements PostRepositoryInterface
 {
+    private const PAGINATION_LIMIT = 100;
+
     public function getMostRecentPost(): ?Post
     {
         return Post::orderBy('created_at', 'desc')->take(1)->get()->first();
     }
 
-    public function getAllPosts(): iterable
+    public function getAllPosts($offset = 0, $limit = self::PAGINATION_LIMIT): iterable
     {
-        return Post::all();
+        if ($limit > self::PAGINATION_LIMIT) {
+            throw new RepositoryException('The limit for pagination cannot be exceeded.');
+        }
+
+        try {
+            return Post::all()->splice($offset, $limit);
+        } catch (Exception $e) {
+            throw new RepositoryException(sprintf('Unable to get the posts at offset %d, limit $d', $offset, $limit));
+        }
     }
 
     public function getPostsInYear(string $year): iterable
@@ -63,9 +74,26 @@ class PostRepository implements PostRepositoryInterface
         return $post;
     }
 
-    public function getPostById(string $id): ?Post
+    public function getPostById(string $id): Post
     {
-        return Post::find($id);
+        $post = Post::find($id);
+
+        if (!$post) {
+            throw new RepositoryException('A post was not found with this id.');
+        }
+
+        return $post;
+    }
+
+    public function getPostBySequence(int $number): Post
+    {
+        $posts = $this->getAllPosts($number -1, 1);
+
+        if (count($posts) !== 1) {
+            throw new RepositoryException('The page number requested does not exist.');
+        }
+
+        return $posts[0];
     }
 
     public function getTagsForPostIdKeyedById(string $id): iterable

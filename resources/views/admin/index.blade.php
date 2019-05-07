@@ -17,10 +17,10 @@
     <div class="row">
         <div class="col-md-8 blog-main">
             <h3 class="pb-4 mb-4 font-italic border-bottom">
-                <a href="/admin/posts/create">Create a Post</a>
+                <a href="{{ route('admin_post_create') }}">Create a Post</a>
             </h3>
             <h3 class="pb-4 mb-4 font-italic border-bottom">
-                <a href="{{ route('admin_posts') }}">Edit a Post</a>
+                <a href="{{ route('admin_posts_index') }}">Edit a Post</a>
             </h3>
             <h3 class="pb-4 mb-4 font-italic border-bottom">
                 <a href="#">Edit About</a>

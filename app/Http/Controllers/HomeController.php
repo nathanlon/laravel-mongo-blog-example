@@ -20,7 +20,9 @@ class HomeController extends Controller
     public function index()
     {
         return view('home.index', [
-            'post' => $this->postService->getMostRecentPost()
+            'post' => $this->postService->getMostRecentPost(),
+            'nextNumber' => 2,
+            'previousNumber' => null,
         ]);
     }
 }

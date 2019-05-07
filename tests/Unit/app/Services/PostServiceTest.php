@@ -62,12 +62,74 @@ class PostServiceTest extends TestCase
         $this->postRepositoryMock
             ->shouldReceive('getPostById')
             ->times(1)
-            ->andReturn(null);
+            ->andThrow(RepositoryException::class, 'The post requested could not be found.');
 
         $this->expectException(PostServiceException::class);
         $this->expectExceptionMessage('The post requested could not be found.');
 
         $this->postService->getPostById('invalid-post-id');
+    }
+
+    /**
+     * @test
+     */
+    public function getPostBySequence_throws_exception_invalid_number(): void
+    {
+        $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('The page number requested is invalid.');
+
+        $this->postService->getPostBySequence('not-number');
+    }
+
+    /**
+     * @test
+     */
+    public function getPostBySequence_returns_post(): void
+    {
+        $expectedPost = new Post();
+        $number = '1';
+
+        $this->postRepositoryMock
+            ->shouldReceive('getPostBySequence')
+            ->times(1)
+            ->with($number)
+            ->andReturn($expectedPost);
+
+        $post = $this->postService->getPostBySequence($number);
+
+        $this->assertSame($expectedPost, $post);
+    }
+
+    /**
+     * @test
+     */
+    public function getPostBySequence_throws_exception_repository_error(): void
+    {
+        $this->postRepositoryMock
+            ->shouldReceive('getPostBySequence')
+            ->times(1)
+            ->andThrow(RepositoryException::class);
+
+        $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('The page number does not exist.');
+
+        $this->postService->getPostBySequence(1);
+    }
+
+    /**
+     * @test
+     */
+    public function getPostBySequence_throws_exception_unknown(): void
+    {
+        $this->postRepositoryMock
+            ->shouldReceive('getPostBySequence')
+            ->times(1)
+            ->andThrow(Exception::class);
+
+        $this->expectException(PostServiceException::class);
+        $this->expectExceptionMessage('An unknown error occurred while getting this post.');
+
+        $this->postService->getPostBySequence(1);
     }
 
     /**
